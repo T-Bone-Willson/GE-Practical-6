@@ -20,12 +20,12 @@ void Level2Scene::Load() {
   // Create player
   {
     // *********************************
-
-
-
-
-
-
+	  player = makeEntity();
+	  player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+	  auto s = player->addComponent<ShapeComponent>();
+	  s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
+	  s->getShape().setFillColor(Color::Magenta);
+	  s->getShape().setOrigin(10.f, 15.f);
     // *********************************
     player->addTag("player");
     player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
@@ -38,14 +38,15 @@ void Level2Scene::Load() {
                        Vector2f(0, 24));
     // *********************************
     // Add HurtComponent
-
+	enemy->addComponent<HurtComponent>();
     // Add ShapeComponent, Red 16.f Circle
-
-
-
+	auto s = enemy->addComponent<ShapeComponent>();
+	s->setShape<sf::CircleShape>(16.f);
+	s->getShape().setFillColor(Color::Red);
+	s->getShape().setOrigin(16.f, 16.f);
 
     // Add EnemyAIComponent
-
+	enemy->addComponent<EnemyAIComponent>();
     // *********************************
   }
 
@@ -64,14 +65,14 @@ void Level2Scene::Load() {
   // Add physics colliders to level tiles.
   {
     // *********************************
-
-
-
-
-
-
-
-
+	  auto walls = ls::findTiles(ls::WALL);
+	  for (auto w : walls) {
+		  auto pos = ls::getTilePosition(w);
+		  pos += Vector2f(20.f, 20.f); // Offset to center I think?
+		  auto e = makeEntity();
+		  e->setPosition(pos);
+		  e->addComponent<PhysicsComponent>(false, Vector2f(40.f, 40.f));
+	  }
     // *********************************
   }
 
