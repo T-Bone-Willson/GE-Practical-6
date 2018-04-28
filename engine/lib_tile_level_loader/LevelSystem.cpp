@@ -49,6 +49,7 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
   int widthCheck = 0;
   for (int i = 0; i < buffer.size(); ++i) {
     const char c = buffer[i];
+	if (c == '\0') { break; } // NO IDEA WHY THIS WORKS!!!
     if (c == '\n') { // newline
       if (w == 0) {  // if we haven't written width yet
         w = i;       // set width
